@@ -142,9 +142,9 @@ class Render extends AbstractCommon
 
         $render .= $this->getTable()->getRow()->renderRows();
 
-        $table = $view->render('css/template-css');
-        $table.= sprintf('<table %s>%s</table>', $this->getTable()->getAttributes(), $render);
-        $table.= $view->render('js/template-js');
+       // $table = $view->render('css/template-css');
+        $table = sprintf('<table %s>%s</table>', $this->getTable()->getAttributes(), $render);
+       // $table.= $view->render('js/template-js');
 
        $view->setVariable('table', $table);
 

@@ -66,6 +66,7 @@
                     $obj.html('');
                     $obj.html(data);
                     initNavigation($obj);
+                    initBtnRange($obj);
                     $obj.find('.processing').hide();
 
 
@@ -86,23 +87,8 @@
 
         function initNavigation($obj) {
             var _this = this;
-            $("#startDate").datepicker({
-                language: 'pt-BR',
-                autoClose: true,
-                onSelect: function (event,inst) {
-                    $("#endtDate").val(event);
-                    $('#zfTableStartDate').val(inst.getFullYear()+"-"+inst.getMonth()+"-"+inst.getDay());
-                    $("#endtDate").datepicker( "option", "minDate", new Date(inst.getFullYear(), inst.getMonth(), inst.getDay()) );
-                    $('#zfTableEndDate').val($('#zfTableStartDate').val());
-                }
-            });
-            $("#endtDate").datepicker({
-                language: 'pt-BR',
-                autoClose: true,
-                onSelect: function (event,inst) {
-                    $('#zfTableEndDate').val(inst.getFullYear()+"-"+inst.getMonth()+"-"+inst.getDay());
-                }
-            });
+
+
             $obj.find('table th.sortable').on('click', function (e) {
                 $obj.find('input[name="zfTableColumn"]').val(jQuery(this).data('column'));
                 $obj.find('input[name="zfTableOrder"]').val(jQuery(this).data('order'));
@@ -169,7 +155,36 @@
                 'target': '_blank'
             });
         }
-
+        function initBtnRange($obj){
+            if($('#daterange-btn').length){
+                moment.locale('pt-br');
+                $('#daterange-btn').daterangepicker(
+                    {
+                        ranges   : {
+                            'Hoje'       : [moment(), moment()],
+                            'Ontem'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                            'Ultimos 7 Dias' : [moment().subtract(6, 'days'), moment()],
+                            'Ultimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+                            'Este Mês'  : [moment().startOf('month'), moment().endOf('month')],
+                            'Ultimo Mês'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                        },
+                        locale : {
+                            applyLabel: 'Aplicar',
+                            cancelLabel: 'Cancelar',
+                            customRangeLabel: 'Perssonalizado'
+                        },
+                        startDate: moment().subtract(29, 'days'),
+                        endDate  : moment()
+                    },
+                    function (start, end) {
+                        $('#daterange-btn span').html(start.format('D MMMM, YYYY') + ' - ' + end.format('D MMMM, YYYY'));
+                        $('#zfTableStartDate').val(start.format('YYYY-MM-DD'));
+                        $('#zfTableEndDate').val(end.format('YYYY-MM-DD'));
+                        ajax($obj);
+                    }
+                )
+            }
+        }
         return this.each(function () {
             var $this = jQuery(this);
             if (!initialized) {

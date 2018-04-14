@@ -15,6 +15,9 @@ class MysqlPdo implements DriverStrategy
     protected $pdo;
     protected $table;
     protected $condiction;
+    /**
+     * @var \PDOStatement
+     */
     protected $query;
 
     public function __construct( \PDO $pdo )
@@ -56,7 +59,6 @@ class MysqlPdo implements DriverStrategy
         if ($query) {
             $this->query = $this->pdo->prepare($query);
         }
-        var_dump($this->query);
         $this->query->execute();
         $this->condiction = [];
         return $this;
@@ -140,7 +142,9 @@ class MysqlPdo implements DriverStrategy
     {
         if ($data):
             foreach ($data as $field => $value) {
-
+//                echo "<pre>";
+//                var_dump([$field,$value]);
+//                echo "</pre>";
                 $this->query->bindValue($field, $value);
             }
         endif;
