@@ -1,0 +1,18 @@
+{
+    "name": "caltj/table",
+    "description": "Biblioteca Makes",
+    "authors": [
+        {
+            "name": "Claudio Campos",
+            "email": "contato@sigasmart.com.br"
+        }
+    ],
+    "require": {},
+    "autoload":{
+        "files" : [
+        ],
+        "psr-4":{
+            "Table\\":"src/"
+        }
+    }
+}

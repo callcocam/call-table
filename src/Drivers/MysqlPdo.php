@@ -1,0 +1,132 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: caltj
+ * Date: 14/04/2018
+ * Time: 00:13
+ */
+
+namespace Table\Drivers;
+
+
+
+class MysqlPdo implements DriverStrategy
+{
+
+    protected $pdo;
+    protected $table;
+    protected $condiction;
+    protected $query;
+
+    public function __construct( \PDO $pdo )
+    {
+        $this->pdo = $pdo;
+    }
+
+    public function setTable( string $table )
+    {
+        $this->table = $table;
+        return $this;
+    }
+
+    public function select( $field = "*", array $conditions = [] )
+    {
+        $query[] = "SELECT {$field} FROM {$this->table}";
+
+        $data = $this->params($conditions);
+
+        if ($this->condiction) {
+            $query[] = implode(' ', $this->condiction);
+        }
+
+        $this->query = $this->pdo->prepare(implode(' ', $query));
+
+        $this->bind($conditions);
+
+        return $this;
+    }
+
+    public function count( $field, array $conditions = [] )
+    {
+        $query[] = "SELECT COUNT({$field}) as total FROM {$this->table}";
+        if ($this->condiction) {
+            $query[] = implode(' ', $this->condiction);
+        }
+        $this->query = $this->pdo->prepare(implode(' ', $query));
+
+        $this->bind($conditions);
+
+        return $this;
+    }
+
+
+    public function exec( string $query = null )
+    {
+        if ($query) {
+            $this->query = $this->pdo->prepare($query);
+        }
+        $this->query->execute();
+        $this->condiction=[];
+        return $this;
+    }
+
+    public function first()
+    {
+        return $this->query->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function all()
+    {
+        return $this->query->fetchaLL(\PDO::FETCH_ASSOC);
+    }
+
+    public function where( $where )
+    {
+        if ($where) {
+            if (!$this->condiction) {
+                $this->condiction[] = ' WHERE ';
+            }
+            $this->condiction[] = $where;
+        }
+
+        return $this;
+    }
+
+    public function setLimit( $limit )
+    {
+        if ($limit)
+            $this->condiction[] = $limit;
+        return $this;
+    }
+
+    public function setOffset( $offset )
+    {
+        if ($offset)
+            $this->condiction[] = $offset;
+        return $this;
+    }
+    public function setOrder( $order )
+    {
+        if ($order)
+            $this->condiction[] = $order;
+        return $this;
+    }
+
+
+    protected function params( $conditions )
+    {
+        $fields = [];
+        foreach ($conditions as $Key => $value) {
+            $fields[] = $Key;
+        }
+
+        return implode(' ', $fields);
+    }
+
+    protected function bind( $data )
+    {
+        foreach ($data as $field => $value) {
+            $this->query->bindValue($field, $value);
+        }
+    }
+}

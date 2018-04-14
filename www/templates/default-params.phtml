@@ -1,0 +1,13 @@
+<div class="params-wrap">
+    <input type="hidden"  name="zfTableStatus" value="<?php echo $zfTableStatus?>" />
+    <input type="hidden"  name="zfTablePage" value="<?php echo $zfTablePage?>" />
+    <input type="hidden"  name="zfTableColumn" value="<?php echo $zfTableColumn?>" />
+    <input type="hidden"  name="zfTableOrder" value="<?php echo $zfTableOrder?>" />
+    <input type="hidden"  name="zfTableQuickSearch" value="<?php echo $zfTableQuickSearch?>" />
+    <input type="hidden"  name="zfTableItemPerPage" value="<?php echo $zfTableItemPerPage?>" />
+    <input type="hidden"  name="zfTableStartDate" value="<?php echo $zfTableStartDate?>" />
+    <input type="hidden"  name="zfTableEndDate" value="<?php echo $zfTableEndDate?>" />
+    <?php if($rowAction):?>
+        <a href="<?php echo $rowAction?>" class="rowAction"></a>
+    <?php endif;?>
+</div>
