@@ -26,6 +26,11 @@ class ModuleOptions implements
      */
     protected $status = 'status';
     /**
+     * Data search of table
+     * @var string
+     */
+    protected $field_date = 'date';
+    /**
      * Name of table
      * @var null | string
      */
@@ -126,6 +131,7 @@ class ModuleOptions implements
     {
         $this->id = (isset($options['id'])) ? $options['id'] : $this->id;
         $this->status = (isset($options['status'])) ? $options['status'] : $this->status;
+        $this->field_date = (isset($options['field_date'])) ? $options['field_date'] : '';
         $this->name = (isset($options['name'])) ? $options['name'] : $this->id;
         $this->showExportToCSV = (isset($options['showExportToCSV'])) ? $options['showExportToCSV'] : $this->showExportToCSV;
         $this->showStatusFilters = (isset($options['showStatusFilters'])) ? $options['showStatusFilters'] : $this->showStatusFilters;
@@ -178,6 +184,23 @@ class ModuleOptions implements
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getFieldDate(): string
+    {
+        return $this->field_date;
+    }
+
+    /**
+     * @param string $field_date
+     * @return ModuleOptions
+     */
+    public function setFieldDate( string $field_date ): ModuleOptions
+    {
+        $this->field_date = $field_date;
+        return $this;
+    }
 
 
     /**

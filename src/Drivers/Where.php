@@ -18,18 +18,23 @@ abstract class Where
     protected $offset = '';
     protected $limit = '';
     protected $order = '';
+    protected $between = [];
     protected $where = [];
 
+    public function setBetween($between){
+        $this->between[] = "{$between} BETWEEN :start_date AND :end_date";
+        return $this;
+    }
     public function setLike( $queryString, $searchTerm )
     {
         $this->like = "{$queryString} LIKE '%{$searchTerm}%'";
-        return $this->like;
+        return $this;
     }
 
-    public function setConcat( array $colls, $searchTerm, $condiction = "LIKE" )
+    public function setConcat( array $columns, $searchTerm, $condiction = "LIKE" )
     {
-        $colls = implode(",", $colls);
-        $this->concat = "CONCAT_WS(' ', {$colls} ) {$condiction} '%{$searchTerm}%'";
+        $columns = implode(",", $columns);
+        $this->concat = "CONCAT_WS(' ', {$columns} ) {$condiction} '%{$searchTerm}%'";
         return $this->concat;
     }
 
@@ -42,16 +47,19 @@ abstract class Where
     public function setOrder( $field, $order = "ASC" )
     {
         $this->order = sprintf("ORDER BY %s %s", $field, $order);
+        return $this;
     }
 
     public function getLimit( $limit )
     {
         $this->limit = sprintf("LIMIT %s", $limit);
+        return $this;
     }
 
     public function getOffset( $Offset )
     {
         $this->offset = sprintf("OFFSET %s", $Offset);
+        return $this;
     }
 
 }

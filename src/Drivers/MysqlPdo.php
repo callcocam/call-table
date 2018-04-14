@@ -45,6 +45,7 @@ class MysqlPdo implements DriverStrategy
         if ($this->condiction) {
             $query[] = implode(' ', $this->condiction);
         }
+        var_dump(implode(' ', $query));
         $this->query = $this->pdo->prepare(implode(' ', $query));
         return $this;
     }
@@ -70,7 +71,7 @@ class MysqlPdo implements DriverStrategy
         return $this->query->fetchaLL(\PDO::FETCH_ASSOC);
     }
 
-    public function where( $where )
+    public function where(array $where )
     {
         if ($where) {
             if (!$this->condiction) {

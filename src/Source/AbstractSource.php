@@ -123,13 +123,20 @@ class AbstractSource extends AbstractCommon implements SourceInterface
             }
             $this->arraySource->setConcat(array_keys($this->fields), $anyKeyword);
         endif;
-        var_dump($this->getParamAdapter()->getStartDate());
-        var_dump($this->getParamAdapter()->getEndDate());
-
         if ($this->getTable()->getParamAdapter()->getStatus()) {
             $this->arraySource->setWhere($this->getTable()->getOptions()->getStatus());
-            $this->queryParams[$this->getTable()->getOptions()->getStatus()]=$this->getTable()->getParamAdapter()->getStatus();
+            $this->queryParams[$this->getTable()->getOptions()->getStatus()] = $this->getTable()->getParamAdapter()->getStatus();
         }
+        if (!empty($this->getTable()->getOptions()->getFieldDate())) {
+            if (!empty($this->getParamAdapter()->getStartDate()) && !empty($this->getParamAdapter()->getEndDate())) {
+                $this->arraySource->setBetween($this->getTable()->getOptions()->getFieldDate());
+                $start_date = date_create($this->getParamAdapter()->getStartDate());
+                $end_date = date_create($this->getParamAdapter()->getEndDate());
+                $this->queryParams['start_date'] = date_format($start_date, 'Y-m-d');
+                $this->queryParams['end_date'] = date_format($end_date, 'Y-m-d');
+            }
+        }
+
 
     }
 
@@ -146,6 +153,6 @@ class AbstractSource extends AbstractCommon implements SourceInterface
 
     public function getSource()
     {
-        return $this->arraySource->findAll(implode(", ",$this->fields), $this->queryParams);
+        return $this->arraySource->findAll(implode(", ", $this->fields), $this->queryParams);
     }
 }

@@ -71,7 +71,20 @@
         }
         function initNavigation($obj){
             var _this = this;
-
+            $("#startDate").datepicker({
+                language: 'pt-BR',
+                autoClose: true,
+                onSelect: function (event) {
+                    $obj.find('input[name="zfTableStartDate"]').val(event);
+                }
+            });
+            $("#endtDate").datepicker({
+                language: 'pt-BR',
+                autoClose: true,
+                onSelect: function (event) {
+                    $obj.find('input[name="zfTableEndDate"]').val(event);
+                }
+            });
             $obj.find('table th.sortable').on('click',function(e){
                 $obj.find('input[name="zfTableColumn"]').val(jQuery(this).data('column'));
                 $obj.find('input[name="zfTableOrder"]').val(jQuery(this).data('order'));

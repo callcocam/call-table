@@ -36,6 +36,7 @@ class Select extends Where
 
         return $this->getDriver()
             ->where($this->where)
+            ->where($this->between)
             ->concat($this->concat)
             ->like($this->like)
             ->setOrder($this->order)
@@ -59,6 +60,7 @@ class Select extends Where
     {
         $Result = $this->getDriver()
             ->where($this->where)
+            ->where($this->between)
             ->concat($this->concat)
             ->like($this->like)
             ->count($field)

@@ -13,7 +13,8 @@ namespace Table;
 class DateFilters extends AbstractElement
 {
     protected $dateSearch ='Buscar Por Data';
-    protected $start_date;
+    protected $start='';
+    protected $end='';
     protected $end_date;
     protected $dateFormatLong;
     private $view;
@@ -51,7 +52,8 @@ class DateFilters extends AbstractElement
          if(!empty($this->start_date) && !empty($this->start_date)):
             $start_date = date_create($this->start_date);
             $end_date = date_create($this->end_date);
-            $this->dateSearch  = sprintf("%s - %s", date_format($start_date, 'd/m/Y'), date_format($end_date, 'd/m/Y'));
+            $this->start  = date_format($start_date, 'd/m/Y');
+            $this->end  = date_format($end_date, 'd/m/Y');
         endif;
     }
 
@@ -64,7 +66,8 @@ class DateFilters extends AbstractElement
     {
         $this->initRendering();
         return $this->view->render("/table/date-time-piker",[
-            'dateSearch' => $this->dateSearch,
+            'start' => $this->start,
+            'end' => $this->end,
         ]);
     }
 }

@@ -29,7 +29,7 @@ interface DriverStrategy
 
     public function count( $field );
 
-    public function where( $where );
+    public function where(array $where );
 
     public function like( $like );
 
