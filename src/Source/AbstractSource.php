@@ -98,7 +98,7 @@ class AbstractSource extends AbstractCommon implements SourceInterface
     {
 
         if (!$this->paginator) {
-            $Total = $this->arraySource->count($this->getTable()->getOptions()->getId());
+            $Total = $this->arraySource->count($this->getTable()->getOptions()->getId(), $this->queryParams);
             $perPage = $this->getParamAdapter()->getItemCountPerPage();
             $this->paginator = new Range($Total, $perPage, 10);
             $this->arraySource->getOffset($this->getParamAdapter()->getOffset());
@@ -123,6 +123,9 @@ class AbstractSource extends AbstractCommon implements SourceInterface
             }
             $this->arraySource->setConcat(array_keys($this->fields), $anyKeyword);
         endif;
+        var_dump($this->getParamAdapter()->getStartDate());
+        var_dump($this->getParamAdapter()->getEndDate());
+
         if ($this->getTable()->getParamAdapter()->getStatus()) {
             $this->arraySource->setWhere($this->getTable()->getOptions()->getStatus());
             $this->queryParams[$this->getTable()->getOptions()->getStatus()]=$this->getTable()->getParamAdapter()->getStatus();

@@ -34,15 +34,15 @@ class MysqlPdo implements DriverStrategy
         if ($this->condiction) {
             $query[] = implode(' ', $this->condiction);
         }
+        var_dump(implode(' ', $query));
         $this->query = $this->pdo->prepare(implode(' ', $query));
         return $this;
     }
 
-    public function count( $field, array $conditions = [] )
+    public function count( $field )
     {
         $query[] = "SELECT COUNT({$field}) as total FROM {$this->table}";
         if ($this->condiction) {
-            $query[] = ' WHERE ';
             $query[] = implode(' ', $this->condiction);
         }
         $this->query = $this->pdo->prepare(implode(' ', $query));
@@ -72,9 +72,11 @@ class MysqlPdo implements DriverStrategy
 
     public function where( $where )
     {
-        $this->bind($where);
         if ($where) {
-            $this->condiction[] = $where;
+            if (!$this->condiction) {
+                $this->condiction[] = ' WHERE ';
+            }
+            $this->condiction[] = implode(" ", $where);
         }
 
         return $this;
@@ -82,15 +84,29 @@ class MysqlPdo implements DriverStrategy
 
     public function like( $like )
     {
-        if ($like)
+        if (!empty($like)) {
+            if ($this->condiction) {
+                $this->condiction[] = ' AND ';
+            } else {
+                $this->condiction[] = ' WHERE ';
+            }
             $this->condiction[] = $like;
+        }
+
         return $this;
     }
 
     public function concat( $concat )
     {
-        if ($concat)
+        if (!empty($concat)) {
+            if ($this->condiction) {
+                $this->condiction[] = ' AND ';
+            } else {
+                $this->condiction[] = ' WHERE ';
+            }
             $this->condiction[] = $concat;
+        }
+
         return $this;
     }
 
@@ -116,21 +132,11 @@ class MysqlPdo implements DriverStrategy
         return $this;
     }
 
-
-    protected function params( $conditions )
-    {
-        $fields = [];
-        foreach ($conditions as $Key => $value) {
-            $fields[] = $Key;
-        }
-
-        return implode(' ', $fields);
-    }
-
     public function bind( $data )
     {
         if ($data):
             foreach ($data as $field => $value) {
+
                 $this->query->bindValue($field, $value);
             }
         endif;

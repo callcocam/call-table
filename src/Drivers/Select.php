@@ -19,7 +19,7 @@ class Select extends Where
         return $this;
     }
 
-    protected function getDriver()
+    protected function getDriver(): DriverStrategy
     {
         return $this->driver;
     }
@@ -33,7 +33,7 @@ class Select extends Where
 
     public function findAll($field = "*", array $conditions = [] )
     {
-        var_dump($this->where);
+
         return $this->getDriver()
             ->where($this->where)
             ->concat($this->concat)
@@ -57,7 +57,6 @@ class Select extends Where
 
     public function count($field, array $conditions = [] )
     {
-        var_dump($this->where);
         $Result = $this->getDriver()
             ->where($this->where)
             ->concat($this->concat)
