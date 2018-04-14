@@ -161,7 +161,7 @@
                 $('#reportrange').daterangepicker(
                     {
                         ranges   : {
-                            'Hoje'       : [moment(), moment()],
+                            'Hoje'       : [moment().subtract(1, 'days'), moment()],
                             'Ontem'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                             'Ultimos 7 Dias' : [moment().subtract(6, 'days'), moment()],
                             'Ultimos 30 Dias': [moment().subtract(29, 'days'), moment()],
@@ -178,7 +178,7 @@
                     },
                     function (start, end) {
                         $('#reportrange').val(start.format('D MMMM, YYYY') + ' - ' + end.format('D MMMM, YYYY'));
-                        $('#zfTableStartDate').val(start.format('YYYY-MM-DD'));
+                        $('#zfTableStartDate').val(start.format('YYYY-MM-DD 00:00:00'));
                         $('#zfTableEndDate').val(end.format('YYYY-MM-DD'));
                         ajax($obj);
                     }
