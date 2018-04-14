@@ -132,8 +132,8 @@ class AbstractSource extends AbstractCommon implements SourceInterface
                 $this->arraySource->setBetween($this->getTable()->getOptions()->getFieldDate());
                 $start_date = date_create($this->getParamAdapter()->getStartDate());
                 $end_date = date_create($this->getParamAdapter()->getEndDate());
-                $this->queryParams['start_date'] = date_format($start_date, 'Y-m-d');
-                $this->queryParams['end_date'] = date_format($end_date, 'Y-m-d');
+                $this->queryParams['start_date'] = date_format($start_date, 'Y-m-d 00:00:00');
+                $this->queryParams['end_date'] = date_format($end_date, 'Y-m-d 23:59:59');
             }
         }
 
