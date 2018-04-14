@@ -74,7 +74,9 @@ class MysqlPdo implements DriverStrategy
     public function where(array $where )
     {
         if ($where) {
-            if (!$this->condiction) {
+            if ($this->condiction) {
+                $this->condiction[] = ' AND ';
+            } else {
                 $this->condiction[] = ' WHERE ';
             }
             $this->condiction[] = implode(" ", $where);
