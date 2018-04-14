@@ -138,7 +138,7 @@ class ModuleOptions implements
         $this->showQuickSearch = (isset($options['showQuickSearch'])) ? $options['showQuickSearch'] : $this->showQuickSearch;
         $this->showStatusFilters = (isset($options['showStatusFilters'])) ? $options['showStatusFilters'] : $this->showStatusFilters;
         $this->showPagination = (isset($options['showPagination'])) ? $options['showPagination'] : $this->showPagination;
-        $this->templateMap = sprintf("%s/admin/views/templates", dirname(dirname(dirname(dirname(dirname(__DIR__))))));
+        $this->templateMap = sprintf("%s/_app/Library/Table/www/templates", dirname(dirname(dirname(dirname(dirname(__DIR__))))));
 
     }
 

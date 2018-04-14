@@ -33,13 +33,16 @@ class Select extends Where
 
     public function findAll($field = "*", array $conditions = [] )
     {
+        var_dump($this->where);
         return $this->getDriver()
-            ->where($this->concat)
-            ->where($this->like)
+            ->where($this->where)
+            ->concat($this->concat)
+            ->like($this->like)
             ->setOrder($this->order)
             ->setLimit($this->limit)
             ->setOffset($this->offset)
-            ->select( $field,$conditions)
+            ->select($field)
+            ->bind($conditions)
             ->exec()
             ->all();
     }
@@ -54,12 +57,13 @@ class Select extends Where
 
     public function count($field, array $conditions = [] )
     {
+        var_dump($this->where);
         $Result = $this->getDriver()
-            ->where($this->concat)
-            ->where($this->like)
-            ->setLimit($this->limit)
-            ->setOffset($this->offset)
-            ->count($field, $conditions)
+            ->where($this->where)
+            ->concat($this->concat)
+            ->like($this->like)
+            ->count($field)
+            ->bind($conditions)
             ->exec()
             ->first();
         if(isset($Result['total'])):
@@ -74,5 +78,6 @@ class Select extends Where
             ->delete(['id' => $this->id])
             ->exec();
     }
+
 
 }

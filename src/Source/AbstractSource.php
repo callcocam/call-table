@@ -33,6 +33,7 @@ class AbstractSource extends AbstractCommon implements SourceInterface
     protected $paginator;
     protected $queryParams = [];
     protected $ParseString = [];
+    protected $fields = ["*"];
 
     /**
      *
@@ -117,13 +118,14 @@ class AbstractSource extends AbstractCommon implements SourceInterface
             foreach ($concatFields as $field) {
                 $header = $this->getTable()->getHeader($field);
                 if (!empty($header->getTableAlias())) {
-                    $fields[$field] = $field;
+                    $this->fields[$field] = $field;
                 }
             }
-            $this->arraySource->setConcat(array_keys($fields), $anyKeyword);
+            $this->arraySource->setConcat(array_keys($this->fields), $anyKeyword);
         endif;
         if ($this->getTable()->getParamAdapter()->getStatus()) {
             $this->arraySource->setWhere($this->getTable()->getOptions()->getStatus());
+            $this->queryParams[$this->getTable()->getOptions()->getStatus()]=$this->getTable()->getParamAdapter()->getStatus();
         }
 
     }
@@ -141,6 +143,6 @@ class AbstractSource extends AbstractCommon implements SourceInterface
 
     public function getSource()
     {
-        return $this->arraySource->findAll();
+        return $this->arraySource->findAll(implode(", ",$this->fields), $this->queryParams);
     }
 }

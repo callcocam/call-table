@@ -9,7 +9,6 @@
 namespace Table\Drivers;
 
 
-
 class MysqlPdo implements DriverStrategy
 {
 
@@ -29,20 +28,13 @@ class MysqlPdo implements DriverStrategy
         return $this;
     }
 
-    public function select( $field = "*", array $conditions = [] )
+    public function select( $field = "*" )
     {
         $query[] = "SELECT {$field} FROM {$this->table}";
-
-        $data = $this->params($conditions);
-
         if ($this->condiction) {
             $query[] = implode(' ', $this->condiction);
         }
-
         $this->query = $this->pdo->prepare(implode(' ', $query));
-
-        $this->bind($conditions);
-
         return $this;
     }
 
@@ -50,12 +42,10 @@ class MysqlPdo implements DriverStrategy
     {
         $query[] = "SELECT COUNT({$field}) as total FROM {$this->table}";
         if ($this->condiction) {
+            $query[] = ' WHERE ';
             $query[] = implode(' ', $this->condiction);
         }
         $this->query = $this->pdo->prepare(implode(' ', $query));
-
-        $this->bind($conditions);
-
         return $this;
     }
 
@@ -66,7 +56,7 @@ class MysqlPdo implements DriverStrategy
             $this->query = $this->pdo->prepare($query);
         }
         $this->query->execute();
-        $this->condiction=[];
+        $this->condiction = [];
         return $this;
     }
 
@@ -82,13 +72,25 @@ class MysqlPdo implements DriverStrategy
 
     public function where( $where )
     {
+        $this->bind($where);
         if ($where) {
-            if (!$this->condiction) {
-                $this->condiction[] = ' WHERE ';
-            }
             $this->condiction[] = $where;
         }
 
+        return $this;
+    }
+
+    public function like( $like )
+    {
+        if ($like)
+            $this->condiction[] = $like;
+        return $this;
+    }
+
+    public function concat( $concat )
+    {
+        if ($concat)
+            $this->condiction[] = $concat;
         return $this;
     }
 
@@ -99,12 +101,14 @@ class MysqlPdo implements DriverStrategy
         return $this;
     }
 
+
     public function setOffset( $offset )
     {
         if ($offset)
             $this->condiction[] = $offset;
         return $this;
     }
+
     public function setOrder( $order )
     {
         if ($order)
@@ -123,10 +127,14 @@ class MysqlPdo implements DriverStrategy
         return implode(' ', $fields);
     }
 
-    protected function bind( $data )
+    public function bind( $data )
     {
-        foreach ($data as $field => $value) {
-            $this->query->bindValue($field, $value);
-        }
+        if ($data):
+            foreach ($data as $field => $value) {
+                $this->query->bindValue($field, $value);
+            }
+        endif;
+        return $this;
     }
+
 }
