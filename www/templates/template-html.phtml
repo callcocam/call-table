@@ -23,44 +23,32 @@
 
 <div class="dashboard_content">
     <div class="zf-table-wrap  form-inline">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="box">
-                    <div class="box-header">
-                        <?php if ($name): ?>
-                            <h3 class="box-title">
-                                <?= $name ?>
-                            </h3>
-                        <?php endif; ?>
+        <div class="box box100">
+            <div class="box-header">
+                <?php if ($name): ?>
+                    <h3 class="box-title">
+                        <?= $name ?>
+                    </h3>
+                <?php endif; ?>
 
-                        <div class="box-tools">
+                <div class="box-tools">
 
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body table-responsive">
-                        <?= $table ?>
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer">
-                        <div class="row">
-                            <div class="col-md-8 col-xs-12">
-                                <div class="dataTables_paginate paging_bootstrap pagination pull-left">
-                                   <ul class="paginator">
-                                       <?= $paginator; ?>
-                                   </ul>
-                                </div>
-                            </div>
-                            <div class="col-md-4  col-xs-12">
-
-
-                            </div>
-                        </div>
-                    </div>
                 </div>
-                <!-- /.box -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive">
+                <?= $table ?>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="dataTables_paginate paging_bootstrap pagination pull-left">
+                    <ul class="paginator">
+                        <?= $paginator; ?>
+                    </ul>
+                </div>
+
             </div>
         </div>
-        <?php echo $paramsWrap; ?>
     </div>
+    <?php echo $paramsWrap; ?>
 </div>

@@ -18,7 +18,7 @@ interface DriverStrategy
 //    public function insert(Model $data);
 //
 //    public function update( Model $data );;
-    public function select( array $data = [] );
+    public function select(  $field = "*" );
 
 //    public function delete(array $data);
     public function exec( string $query = null );

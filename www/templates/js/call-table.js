@@ -156,9 +156,9 @@
             });
         }
         function initBtnRange($obj){
-            if($('#daterange-btn').length){
+            if($('#reportrange').length){
                 moment.locale('pt-br');
-                $('#daterange-btn').daterangepicker(
+                $('#reportrange').daterangepicker(
                     {
                         ranges   : {
                             'Hoje'       : [moment(), moment()],
@@ -177,12 +177,16 @@
                         endDate  : moment()
                     },
                     function (start, end) {
-                        $('#daterange-btn span').html(start.format('D MMMM, YYYY') + ' - ' + end.format('D MMMM, YYYY'));
+                        $('#reportrange').val(start.format('D MMMM, YYYY') + ' - ' + end.format('D MMMM, YYYY'));
                         $('#zfTableStartDate').val(start.format('YYYY-MM-DD'));
                         $('#zfTableEndDate').val(end.format('YYYY-MM-DD'));
                         ajax($obj);
                     }
-                )
+                ).on('show.daterangepicker', function(ev, picker) {
+                    console.log(picker)
+                    //do something, like clearing an input
+                    $('.dropdown-menu').css('z-index','3000');
+                })
             }
         }
         return this.each(function () {
