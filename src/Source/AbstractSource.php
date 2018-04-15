@@ -124,7 +124,7 @@ class AbstractSource extends AbstractCommon implements SourceInterface
             $this->arraySource->setConcat(array_keys($this->fields), $anyKeyword);
         endif;
         if ($this->getTable()->getParamAdapter()->getStatus()) {
-            $this->arraySource->setWhere($this->getTable()->getOptions()->getStatus());
+             $this->arraySource->setWhere($this->getTable()->getOptions()->getStatus());
             $this->queryParams[$this->getTable()->getOptions()->getStatus()] = $this->getTable()->getParamAdapter()->getStatus();
         }
         if (!empty($this->getTable()->getOptions()->getFieldDate())) {

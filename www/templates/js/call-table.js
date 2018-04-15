@@ -83,9 +83,12 @@
                 ajax($obj);
             });
             $obj.find('.paginator').find('a').on('click', function (e) {
-                $obj.find('input[name="zfTablePage"]').val(jQuery(this).data('page'));
                 e.preventDefault();
-                ajax($obj);
+                if (!$(this).hasClass('disabled')) {
+                    $obj.find('input[name="zfTablePage"]').val(jQuery(this).data('page'));
+                    ajax($obj);
+                }
+
             });
             $obj.find('.itemPerPage').on('change', function (e) {
                 $obj.find('input[name="zfTableItemPerPage"]').val(jQuery(this).val());
@@ -145,28 +148,28 @@
         }
 
 
-        function initBtnRange($obj){
-            if($('#reportrange').length){
+        function initBtnRange($obj) {
+            if ($('#reportrange').length) {
                 moment.locale('pt-br');
                 $('#reportrange').daterangepicker(
                     {
-                        ranges   : {
-                            'Hoje'       : [moment().subtract(1, 'days'), moment()],
-                            'Ontem'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                            'Ultimos 7 Dias' : [moment().subtract(6, 'days'), moment()],
+                        ranges: {
+                            'Hoje': [moment().subtract(1, 'days'), moment()],
+                            'Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                            'Ultimos 7 Dias': [moment().subtract(6, 'days'), moment()],
                             'Ultimos 30 Dias': [moment().subtract(29, 'days'), moment()],
-                            'Este Mês'  : [moment().startOf('month'), moment().endOf('month')],
-                            'Ultimo Mês'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                            'Este Mês': [moment().startOf('month'), moment().endOf('month')],
+                            'Ultimo Mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                         },
-                        locale : {
+                        locale: {
                             applyLabel: 'Aplicar',
                             cancelLabel: 'Cancelar',
                             customRangeLabel: 'Perssonalizado'
                         },
                         startDate: moment().subtract(29, 'days'),
-                        endDate  : moment(),
-                        applyClass:'btn btn_green',
-                        cancelClass:'btn btn_red'
+                        endDate: moment(),
+                        applyClass: 'btn btn_green',
+                        cancelClass: 'btn btn_red'
                     },
                     function (start, end) {
                         $('#reportrange').val(start.format('D MMMM, YYYY') + ' - ' + end.format('D MMMM, YYYY'));

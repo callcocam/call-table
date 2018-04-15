@@ -66,3 +66,10 @@ table.table thead .sorting_desc_disabled { background: url('../img/sort_desc_dis
     margin-right: 3px!important;
     padding: 8px 1px!important;
 }
+
+.paginator .disabled{
+    background-color: #666666;
+}
+.paginator .disabled:hover{
+    background-color: #666666;
+}

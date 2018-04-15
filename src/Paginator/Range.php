@@ -49,7 +49,7 @@ class Range extends AbstractPaginator
      * Class 'off' name for page link tags
      * @var string
      */
-    protected $classOff = null;
+    protected $classOff = 'disabled';
 
     /**
      * Set the bookend separator
@@ -169,7 +169,7 @@ class Range extends AbstractPaginator
         for ($i = $pageRange['start']; $i <= $pageRange['end']; $i++) {
             $newLink  = null;
             $classOff = (null !== $this->classOff) ? sprintf(" class='%s'",$this->classOff) : null;
-            $classOn = (null !== $this->classOn) ? sprintf(" class='%s'",$this->classOff) : null;
+            $classOn = (null !== $this->classOn) ? sprintf(" class='%s'",$this->classOn) : null;
 
             $newLink = ($i == $page) ?sprintf("<li><a %s >%s</a></li>",$classOff,$i) : sprintf("<li %s><a href='#' data-page='%s'>%s</a></li>",$classOn,$i,$i);
 
