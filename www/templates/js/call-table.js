@@ -1,19 +1,4 @@
 (function (jQuery) {
-    jQuery.fn.animateGreenHighlight = function (highlightColor, duration) {
-        var highlightBg = highlightColor || "#68e372";
-        var animateMs = duration || "1000"; // edit is here
-        var originalBg = this.css("background-color");
-
-        if (!originalBg || originalBg == highlightBg)
-            originalBg = "#FFFFFF"; // default to white
-
-        jQuery(this)
-            .css("backgroundColor", highlightBg)
-            .animate({backgroundColor: originalBg}, animateMs, null, function () {
-                jQuery(this).css("backgroundColor", originalBg);
-            });
-    };
-
     jQuery.fn.zfTable = function (url, options) {
 
         var initialized = false;
@@ -22,8 +7,11 @@
 
 
             beforeSend: function () {
+                $('.daterangepicker').remove();
             },
             success: function () {
+                //$('#reportrange').val($('#zfTableStartDate').val() + ' - ' + $('#zfTableEndDate').val());
+
             },
             error: function () {
             },
@@ -155,6 +143,8 @@
                 'target': '_blank'
             });
         }
+
+
         function initBtnRange($obj){
             if($('#reportrange').length){
                 moment.locale('pt-br');
@@ -178,17 +168,15 @@
                     },
                     function (start, end) {
                         $('#reportrange').val(start.format('D MMMM, YYYY') + ' - ' + end.format('D MMMM, YYYY'));
-                        $('#zfTableStartDate').val(start.format('YYYY-MM-DD 00:00:00'));
+                        $('#zfTableStartDate').val(start.format('YYYY-MM-DD'));
                         $('#zfTableEndDate').val(end.format('YYYY-MM-DD'));
                         ajax($obj);
                     }
-                ).on('show.daterangepicker', function(ev, picker) {
-                    console.log(picker)
-                    //do something, like clearing an input
-                    $('.dropdown-menu').css('z-index','3000');
-                })
+                )
             }
         }
+
+
         return this.each(function () {
             var $this = jQuery(this);
             if (!initialized) {

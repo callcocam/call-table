@@ -50,3 +50,19 @@ table.table thead .sorting_desc_disabled { background: url('../img/sort_desc_dis
     display: none;
 
 }
+#reportrange{
+    position: relative;
+}
+.col-auto{
+    width: 20%;
+    display: inline-block;
+}
+.btn_search{
+    width: 100%;
+    padding: 8px 1px;
+}
+.quick-search{
+    width: 20%!important;
+    margin-right: 3px!important;
+    padding: 8px 1px!important;
+}
