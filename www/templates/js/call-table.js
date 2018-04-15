@@ -164,7 +164,9 @@
                             customRangeLabel: 'Perssonalizado'
                         },
                         startDate: moment().subtract(29, 'days'),
-                        endDate  : moment()
+                        endDate  : moment(),
+                        applyClass:'btn btn_green',
+                        cancelClass:'btn btn_red'
                     },
                     function (start, end) {
                         $('#reportrange').val(start.format('D MMMM, YYYY') + ' - ' + end.format('D MMMM, YYYY'));
