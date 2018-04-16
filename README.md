@@ -28,7 +28,7 @@ case 'manager_status':
 ```
 Adicionar atributos
 
-``
+```
 //Attr and class for table
 $this->addClass('tableClass');
 $this->addAttr('tableAttr', 'tableAttrValue');
@@ -44,10 +44,10 @@ $this->getRow()->addClass('class', 'nowaklasa1');
  //Attr and class for cell
 $this->getHeader('surname')->getCell()->addAttr('cellAttr', 'cellAttrValue');
 $this->getHeader('surname')->getCell()->addDecorator('class', array('class' => 'sss'));
-``      
+```      
 Separar por grupo
 
-``
+```
 
 class Separatable extends AbstractTable
 {
@@ -78,12 +78,11 @@ class Separatable extends AbstractTable
     {
     }
 } 
-
-``
+```
 
 Condições
 
-``
+```
 $this->getHeader('name')->getCell()->addDecorator('link', array(
     'url' => '/table/link/id/%s',
     'vars' => array('idcustomer')
@@ -93,4 +92,4 @@ $this->getHeader('name')->getCell()->addDecorator('link', array(
     'url' => '/table/link/id/%s',
     'vars' => array('idcustomer')
 ))->addCondition('equal', array('column' => 'city', 'values' => 'Warszawa'));
-``
+```
