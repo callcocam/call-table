@@ -35,6 +35,8 @@ class Posts extends AbstractTable
         $this->headers = (new HeadersConfig($this->defaultHeaders))
             ->add('post_title', ['tableAlias' => 'p', 'title' => 'Name'], 'post_cover')
             ->add('post_subtitle', ['tableAlias' => 'p', 'title' => 'Sub Titulo'], 'post_title')
+            ->add('post_views', ['tableAlias' => 'p', 'title' => 'Visualisaçõe'], 'post_title')
+            ->add('coluna', ['tableAlias' => 'p', 'title' => 'Visualisaçõe'], 'post_views')
             ->add('post_id', [ 'title' => '#', 'width' => '200', "sortable" => false ], 'post_status')
             ->getHeaders();
 
@@ -70,29 +72,50 @@ class Posts extends AbstractTable
             'vars' => 'post_id'
         ]);
 
-//        $this->getHeader('coluna')->getCell()->addDecorator('callable', array(
-//            'callable' => function ( $context, $record ) {
-//                return $context ou $record->getColuna();
-//            }
-//        ));
+        $this->getHeader('coluna')->getCell()->addDecorator('callable', array(
+            'callable' => function ( $context, $record ) {
+                $Read = new \Read();
+                extract($record);
+
+                $S = filter_input(INPUT_GET, "s", FILTER_DEFAULT);
+                $T = filter_input(INPUT_GET, "tag", FILTER_DEFAULT);
+                $Category = null;
+                if (!empty($post_category)):
+                    $Read->FullRead("SELECT category_id, category_title FROM " . DB_CATEGORIES . " WHERE category_id = :ct", "ct={$post_category}");
+                    if ($Read->getResult()):
+                        $Category = "<span class='icon-bookmark'><a title='Artigos em {$Read->getResult()[0]['category_title']}' href='dashboard.php?wc=posts/home&s={$S}&cat={$Read->getResult()[0]['category_id']}&tag=" . urlencode($T) . "'>{$Read->getResult()[0]['category_title']}</a></span> ";
+                    endif;
+                endif;
+
+                if (!empty($post_category_parent)):
+                    $Read->FullRead("SELECT category_title, category_id FROM " . DB_CATEGORIES . " WHERE category_id IN({$post_category_parent})");
+                    if ($Read->getResult()):
+                        foreach ($Read->getResult() as $SubCat):
+                            $Category .= "<span class='icon-bookmarks'><a title='Artigos em {$SubCat['category_title']}' href='dashboard.php?wc=posts/home&s={$S}&cat={$SubCat['category_id']}&tag=" . urlencode($T) . "'>{$SubCat['category_title']}</a></span> ";
+                        endforeach;
+                    endif;
+                endif;
+               return $Category;
+            }
+        ));
 
 
         //$this->getHeader('post_id')->addDecorator('check');
         //$this->getHeader('post_id')->getCell()->addDecorator('check');
-        $this->getHeader('post_status')->getCell()->addDecorator('state', [
-            'value' => [
-                '1' => 'Active',
-                '2' => 'Desactive',
-                '0' => 'Desactive',
-                '3' => 'Trash',
-            ],
-            'class' => [
-                '1' => 'green',
-                '2' => 'yellow',
-                '0' => 'yellow',
-                '3' => 'red',
-            ],
-        ]);
+//        $this->getHeader('post_status')->getCell()->addDecorator('state', [
+//            'value' => [
+//                '1' => 'Active',
+//                '2' => 'Desactive',
+//                '0' => 'Desactive',
+//                '3' => 'Trash',
+//            ],
+//            'class' => [
+//                '1' => 'green',
+//                '2' => 'yellow',
+//                '0' => 'yellow',
+//                '3' => 'red',
+//            ],
+//        ]);
 
 
         $this->buttonConfig->setVars([

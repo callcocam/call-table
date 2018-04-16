@@ -54,7 +54,7 @@ class Render extends AbstractCommon
         $res = array();
         $render = $this->getTable()->getRow()->renderRows('array_assc');
         $res['sEcho'] = $render;
-        $res['iTotalDisplayRecords'] = $this->getTable()->getSource()->getPaginator()->getTotalItemCount();
+        $res['iTotalDisplayRecords'] = $this->getTable()->getSource()->getPaginator();
         $res['aaData'] = $render;
         $res['draw'] = $render;
         $res['data'] = $render;
@@ -69,7 +69,7 @@ class Render extends AbstractCommon
 
         $res = array(
             'draw' => $render,
-            'recordsFiltered' => $this->getTable()->getSource()->getPaginator()->getTotalItemCount(),
+            'recordsFiltered' => $this->getTable()->getSource()->getPaginator()->getTotal(),
             'data' => $render,
         );
 
@@ -101,8 +101,7 @@ class Render extends AbstractCommon
         $tableConfig = $this->getTable()->getOptions();
         $rowsArray = $this->getTable()->getRow()->renderRows('array_assc');
 
-        $view = new PhpRenderer();
-        $view->setTemplate($this->getTable()->getOptions()->getTemplateMap()['data-table-init']);
+        $view = new PhpRenderer($tableConfig->getTemplateMap());
         $view->setVariable('rows', $rowsArray);
         $view->setVariable('paginator', $this->renderPaginator());
         $view->setVariable('paramsWrap', $this->renderParamsWrap());
@@ -113,9 +112,83 @@ class Render extends AbstractCommon
         $view->setVariable('showQuickSearch', $tableConfig->getShowQuickSearch());
         $view->setVariable('showPagination', $tableConfig->getShowPagination());
         $view->setVariable('showItemPerPage', $tableConfig->getShowItemPerPage());
-        $view->setVariable('showExportToCSV', $tableConfig->getShowExportToCSV());
+        $view->setVariable('router', $this->getTable()->getRoute());
 
-        return $view;
+        $view->setVariable('paramsWrap', $this->renderParamsWrap());
+
+        $view->setVariable('name', $tableConfig->getName());
+
+        /**
+         * Inicia o filtro de items por paginas
+         */
+        $view->setVariable('quickSearch', '');
+        /**
+         * Verifica se ele esta habilitado para o modulo
+         */
+        if($tableConfig->getShowQuickSearch()){
+            $view->setVariable('quickSearch', $this->getTable()->getParamAdapter()->getQuickSearch());
+        }
+
+        /**
+         * Inicia o filtro de items por paginas
+         */
+        $view->setVariable('itemCountPerPageValues', '');
+        /**
+         * Verifica se ele esta habilitado para o modulo
+         */
+        if($tableConfig->getShowItemPerPage()){
+            $view->setVariable('ValuesOfItemPerPage', $this->renderValuesOfItemPerPage());
+        }
+
+
+        /**
+         * Inicia o filtro de status do registro
+         */
+        $view->setVariable('valueStatus', "");
+        /**
+         * Verifica se ele esta habilitado para o modulo
+         */
+        if($tableConfig->isShowStatusFilters()) {
+            $view->setVariable('valueStatus', $this->renderStatus());
+        }
+        /**
+         * Inicia o filtro de QuickSearch
+         */
+        $view->setVariable('QuickSearch', "");
+        /**
+         * Verifica se ele esta habilitado para o modulo
+         */
+        if($tableConfig->getShowQuickSearch()) {
+            $view->setVariable('QuickSearch', $this->renderQuickSearch());
+        }
+        /**
+         * Inicia o filtro de para datas
+         */
+        $view->setVariable('DateFilters', "");
+        /**
+         * Verifica se ele esta habilitado para o modulo
+         */
+        if($tableConfig->isShowDateFilters()) {
+            $view->setVariable('DateFilters', $this->renderDateFilters());
+        }
+
+        /**
+         * Inicia paginator
+         */
+        $view->setVariable('paginator', "");
+        /**
+         * Verifica se ele esta habilitado para o modulo
+         */
+        if($tableConfig->getShowPagination()) {
+            $view->setVariable('paginator', $this->renderPaginator());
+        }
+
+
+        $view->setVariable('showExportToCSV', $tableConfig->getShowExportToCSV());
+        $view->setVariable('zfTablePage', $this->getTable()->getParamAdapter()->getPage());
+
+
+        return $view->render($template);
     }
 
     /**

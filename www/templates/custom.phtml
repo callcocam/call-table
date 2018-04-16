@@ -1,0 +1,76 @@
+<header class="dashboard_header">
+    <div class="dashboard_header_title">
+        <h1 class="icon-blog">Posts</h1>
+        <p class="dashboard_header_breadcrumbs">
+            &raquo; <?= ADMIN_NAME; ?>
+            <span class="crumb">/</span>
+            <a title="<?= ADMIN_NAME; ?>" href="dashboard.php?wc=home">Dashboard</a>
+            <span class="crumb">/</span>
+            <a title="Todos os Posts" href="dashboard.php?wc=posts/home">Posts</a>
+
+        </p>
+    </div>
+    <div class="dashboard_header_search" style="width: 60%">
+        <form style="width: 100%; display: inline-block;" name="searchCategoriesPost" action="" method="post"
+              enctype="multipart/form-data" class="ajax_off">
+            <?= $DateFilters; ?>
+            <?= $QuickSearch; ?>
+            <?= $valueStatus; ?>
+            <?= $ValuesOfItemPerPage; ?>
+        </form>
+    </div>
+</header>
+
+<div class="dashboard_content">
+    <div class="zf-table-wrap  form-inline">
+        <div class="box box100">
+            <div class="box-header">
+                <?php if ($name): ?>
+                    <h3 class="box-title">
+                        <?= $name ?>
+                    </h3>
+                <?php endif; ?>
+
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive">
+                <?php if ($rows): ?>
+                    <?php foreach ($rows as $row): ?>
+                        <article class="box box25 post_single" id="52">
+                            <div class="post_single_cover">
+                                <a title="Ver artigo no site" target="_blank" href="<?= BASE ?>/<?= $row['post_name'] ?>"><?= $row['post_cover'] ?></a>
+                                <div class="post_single_status">
+                    <span class="btn wc_tooltip"><?= str_pad($row['post_views'], 4, 0, STR_PAD_LEFT) ?> <span
+                                class="wc_tooltip_baloon">Visualizações</span></span>
+                                    <span class="btn btn_yellow icon-warning icon-notext wc_tooltip"><?= $row['post_status']; ?></span>
+
+                                </div>
+                                <div class="post_single_tag"><?= $row['coluna']; ?></div>
+                            </div>
+                            <div class="post_single_content wc_normalize_height" style="height: 133px;">
+                                <h1 class="title"><a title="Ver artigo no site" target="_blank"
+                                                     href="<?= BASE ?>/<?= $row['post_name'] ?>"><?= $row['post_title'] ?></a></h1>
+                                <p class="post_single_cat"><span class="icon-bookmark"><?= $row['coluna']; ?></p>
+                            </div>
+                            <div class="post_single_actions">
+                                <?= $row['post_id'] ?>
+                            </div>
+                        </article>
+                    <?php
+                    endforeach;
+                endif;
+                ?>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                <div class="dataTables_paginate paging_bootstrap pagination pull-left">
+                    <ul class="paginator">
+                        <?= $paginator; ?>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <?php echo $paramsWrap; ?>
+</div>

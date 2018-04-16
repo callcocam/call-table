@@ -18,8 +18,8 @@ class Img extends AbstractCellDecorator
      * @var null | array
      */
     protected $vars;
-    protected $w=250;
-    protected $h=250;
+    protected $w=IMAGE_W;
+    protected $h=IMAGE_H;
 
 
     /**
