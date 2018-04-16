@@ -42,15 +42,16 @@
                                 <div class="post_single_status">
                     <span class="btn wc_tooltip"><?= str_pad($row['post_views'], 4, 0, STR_PAD_LEFT) ?> <span
                                 class="wc_tooltip_baloon">Visualizações</span></span>
-                                    <span class="btn btn_yellow icon-warning icon-notext wc_tooltip"><?= $row['post_status']; ?></span>
+
+                                    <?= $row['post_status']; ?>
 
                                 </div>
-                                <div class="post_single_tag"><?= $row['coluna']; ?></div>
+                                <div class="post_single_tag"><?= $row['post_tags']; ?></div>
                             </div>
                             <div class="post_single_content wc_normalize_height" style="height: 133px;">
                                 <h1 class="title"><a title="Ver artigo no site" target="_blank"
                                                      href="<?= BASE ?>/<?= $row['post_name'] ?>"><?= $row['post_title'] ?></a></h1>
-                                <p class="post_single_cat"><span class="icon-bookmark"><?= $row['coluna']; ?></p>
+                                <p class="post_single_cat"><span class="icon-bookmark"><?= $row['post_category']; ?></p>
                             </div>
                             <div class="post_single_actions">
                                 <?= $row['post_id'] ?>

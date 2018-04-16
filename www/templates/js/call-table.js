@@ -42,6 +42,17 @@
             },
             sendAdditionalParams: function () {
                 return '';
+            },
+            dateDefault: moment().subtract(29, 'days'),
+            ranges: function (current) {
+                var ranger= Array();
+                ranger['hoje']= moment().subtract(1, 'days');
+                ranger['hntem']= moment();
+                ranger['ultimos_7_dias']= moment().subtract(6, 'days');
+                ranger['ultimos_30_dias']= moment().subtract(29, 'days');
+                ranger['este_ms']=moment().startOf('month');
+                ranger['ultimo_mes']=moment().subtract(1, 'month').startOf('month');
+                this.dateDefault = ranger[current.replace(' ','_')];
             }
 
 
@@ -140,14 +151,18 @@
 
             $obj.find('.j_confirm_delete').on('click', function (e) {
                 $this = $(this);
-                if($this.hasClass('btn_red')){
+                if ($this.hasClass('btn_red')) {
                     $this.removeClass('btn_red').addClass('btn_yellow').text("Confirmar");
                 }
-                else{
+                else {
                     var DelId = $(this).data('id');
                     var Callback = $(this).data('callback');
                     var Callback_action = $(this).data('callback_action');
-                    $.post('_ajax/' + Callback + '.ajax.php', {callback: Callback, callback_action: Callback_action, del_id: DelId}, function (data) {
+                    $.post('_ajax/' + Callback + '.ajax.php', {
+                        callback: Callback,
+                        callback_action: Callback_action,
+                        del_id: DelId
+                    }, function (data) {
                         if (data.trigger) {
                             Trigger(data.trigger);
 
@@ -166,7 +181,13 @@
                 var Callback = $(this).data('callback');
                 var status = $(this).data('status');
                 var Callback_action = $(this).data('callback_action');
-                $.post('_ajax/' + Callback + '.ajax.php', {status:status,campo:campo,'callback': Callback, 'callback_action': Callback_action, 'del_id': DelId}, function (data) {
+                $.post('_ajax/' + Callback + '.ajax.php', {
+                    status: status,
+                    campo: campo,
+                    'callback': Callback,
+                    'callback_action': Callback_action,
+                    'del_id': DelId
+                }, function (data) {
                     if (data.trigger) {
                         Trigger(data.trigger);
                     }
@@ -175,7 +196,6 @@
                 return false;
 
             });
-
 
 
             $obj.find('.export-csv').on('click', function (e) {
@@ -209,6 +229,7 @@
 
 
         function initBtnRange($obj) {
+
             if ($('#reportrange').length) {
                 moment.locale('pt-br');
                 $('#reportrange').daterangepicker(
@@ -226,22 +247,24 @@
                             cancelLabel: 'Cancelar',
                             customRangeLabel: 'Perssonalizado'
                         },
-                        //startDate: moment().subtract(29, 'days'),
+                        startDate: options.dateDefault,
                         endDate: moment(),
                         applyClass: 'btn btn_green',
                         cancelClass: 'btn btn_red'
-                    },
-                    function (start, end) {
-                        $('#reportrange').val(start.format('D MMMM, YYYY') + ' - ' + end.format('D MMMM, YYYY'));
-                        $('#zfTableStartDate').val(start.format('YYYY-MM-DD'));
-                        $('#zfTableEndDate').val(end.format('YYYY-MM-DD'));
-                        ajax($obj);
                     }
-                ).on('cancel.daterangepicker', function(ev, picker) {
+                ).on('cancel.daterangepicker', function (ev, picker) {
                     //do something, like clearing an input
                     $('#label-search').text('Buscar Por Data');
                     $('#zfTableStartDate').val('');
                     $('#zfTableEndDate').val('');
+                    ajax($obj);
+                }).on('apply.daterangepicker', function (ev, picker) {
+                     $('#reportrange').val(picker.startDate.format('D MMMM, YYYY') + ' - ' + picker.endDate.format('D MMMM, YYYY'));
+                    $('#zfTableStartDate').val(picker.startDate.format('YYYY-MM-DD'));
+                    $('#zfTableEndDate').val(picker.endDate.format('YYYY-MM-DD'));
+                    var current=picker.chosenLabel.replace(' ',"_").toLowerCase();
+                    options.ranges(current);
+
                     ajax($obj);
                 })
             }

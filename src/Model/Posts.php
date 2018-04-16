@@ -36,8 +36,9 @@ class Posts extends AbstractTable
             ->add('post_title', ['tableAlias' => 'p', 'title' => 'Name'], 'post_cover')
             ->add('post_subtitle', ['tableAlias' => 'p', 'title' => 'Sub Titulo'], 'post_title')
             ->add('post_views', ['tableAlias' => 'p', 'title' => 'Visualisaçõe'], 'post_title')
-            ->add('coluna', ['tableAlias' => 'p', 'title' => 'Visualisaçõe'], 'post_views')
-            ->add('post_id', [ 'title' => '#', 'width' => '200', "sortable" => false ], 'post_status')
+            ->add('post_tags', ['tableAlias' => 'p', 'title' => 'Visualisaçõe'], 'post_views')
+            ->add('post_category', ['tableAlias' => 'p', 'title' => 'Visualisaçõe'], 'post_tags')
+            ->add('post_id', ['title' => '#', 'width' => '200', "sortable" => false], 'post_status')
             ->getHeaders();
 
         $this->config = (new Config())
@@ -51,7 +52,7 @@ class Posts extends AbstractTable
 
         $this->valuesOfItemPerPage = (new ItemPerPageConfig())->add(10, 10)->getItems();
         //Descomente para imagem
-       $this->coverConfig = new ImgConfig();
+        $this->coverConfig = new ImgConfig();
 
 
     }
@@ -60,19 +61,33 @@ class Posts extends AbstractTable
     {
         $this->buttonConfig = new ButtonsConfig();
 
-        $this->getHeader('post_cover')->getCell()->addDecorator('img',[
-            'vars'=>[
-                'title'=>'post_title'
+        $this->getHeader('post_cover')->getCell()->addDecorator('img', [
+            'vars' => [
+                'title' => 'post_title'
             ]
         ]);
 //
         $this->getHeader('post_title')->getCell()->addDecorator('link', [
-            'path'=>'posts',
-            'action'=>'create',
+            'path' => 'posts',
+            'action' => 'create',
             'vars' => 'post_id'
         ]);
 
-        $this->getHeader('coluna')->getCell()->addDecorator('callable', array(
+        $this->getHeader('post_tags')->getCell()->addDecorator('callable', array(
+            'callable' => function ( $context, $record ) {
+                $postTags = null;
+                $S = filter_input(INPUT_GET, "s", FILTER_DEFAULT);
+                $C = filter_input(INPUT_GET, "cat", FILTER_DEFAULT);
+                if ($context):
+                    foreach (explode(",", $context) AS $tags):
+                        $tag = ltrim(rtrim($tags));
+                        $postTags .= "<a class='icon-price-tag radius' title='Artigos marcados com {$tag}' href='dashboard.php?wc=posts/home&s={$S}&cat={$C}&tag=" . urlencode($tag) . "'>{$tag}</a>";
+                    endforeach;
+                endif;
+                return $postTags;
+            }
+        ));
+        $this->getHeader('post_category')->getCell()->addDecorator('callable', array(
             'callable' => function ( $context, $record ) {
                 $Read = new \Read();
                 extract($record);
@@ -95,50 +110,50 @@ class Posts extends AbstractTable
                         endforeach;
                     endif;
                 endif;
-               return $Category;
+                return $Category;
             }
         ));
 
 
         //$this->getHeader('post_id')->addDecorator('check');
         //$this->getHeader('post_id')->getCell()->addDecorator('check');
-//        $this->getHeader('post_status')->getCell()->addDecorator('state', [
-//            'value' => [
-//                '1' => 'Active',
-//                '2' => 'Desactive',
-//                '0' => 'Desactive',
-//                '3' => 'Trash',
-//            ],
-//            'class' => [
-//                '1' => 'green',
-//                '2' => 'yellow',
-//                '0' => 'yellow',
-//                '3' => 'red',
-//            ],
-//        ]);
+        $this->getHeader('post_status')->getCell()->addDecorator('state', [
+            'value' => [
+                '1' => 'Active',
+                '2' => 'Desactive',
+                '0' => 'Desactive',
+                '3' => 'Trash',
+            ],
+            'class' => [
+                '1' => 'green',
+                '2' => 'yellow',
+                '0' => 'yellow',
+                '3' => 'red',
+            ],
+        ]);
 
 
         $this->buttonConfig->setVars([
-            'id'=>'post_id',
-            'campo_status'=>'post_status',
-            'callback'=>'Posts',
-            'callback_action'=>'manager_status'])->setName("status")
-            ->setStatus([0,1,2,3])
+            'id' => 'post_id',
+            'campo_status' => 'post_status',
+            'callback' => 'Posts',
+            'callback_action' => 'manager_status'])->setName("status")
+            ->setStatus([0, 1, 2, 3])
             ->add("status");
 
         $this->buttonConfig->setVars([
-            'id'=>'post_id',
-            'campo_status'=>'post_status',
-            'action'=>'admin/dashboard.php?wc=posts/create&id='])->setName("editar")
+            'id' => 'post_id',
+            'campo_status' => 'post_status',
+            'action' => 'admin/dashboard.php?wc=posts/create&id='])->setName("editar")
             ->add("editar");
 
         $this->buttonConfig->setVars([
-            'id'=>'post_id',
-            'campo_status'=>'post_status',
-            'callback'=>'Posts',
-            'callback_action'=>'delete',
+            'id' => 'post_id',
+            'campo_status' => 'post_status',
+            'callback' => 'Posts',
+            'callback_action' => 'delete',
         ])->setName("excluir")
-            ->setStatus([0,1,2,3])
+            ->setStatus([0, 1, 2, 3])
             ->add("excluir");
 
         $this->getHeader('post_id')->getCell()->addDecorator('btn', [
@@ -150,7 +165,7 @@ class Posts extends AbstractTable
     //The filters could also be done with a parametrised query
     protected function initFilters( $query )
     {
-          // var_dump($query);
+        // var_dump($query);
     }
 
 }
