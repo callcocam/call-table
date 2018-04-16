@@ -16,6 +16,26 @@
             error: function () {
             },
             complete: function () {
+
+                $('.icheck').iCheck({
+                    checkboxClass: 'icheckbox_square-blue',
+                    radioClass: 'iradio_square-blue',
+                    increaseArea: '20%' // optional
+                });
+
+                //When unchecking the checkbox
+                $("#check-all").on('ifUnchecked', function (event) {
+                    //Uncheck all checkboxes
+                    $(".check_acao", ".table").iCheck("uncheck");
+
+                });
+
+                //When checking the checkbox
+                $("#check-all").on('ifChecked', function (event) {
+                    //Check all checkboxes
+                    $(".check_acao", ".table").iCheck("check");
+
+                });
             },
 
             onInit: function () {
@@ -117,6 +137,46 @@
                     ajax($obj);
                 }
             });
+
+            $obj.find('.j_confirm_delete').on('click', function (e) {
+                $this = $(this);
+                if($this.hasClass('btn_red')){
+                    $this.removeClass('btn_red').addClass('btn_yellow').text("Confirmar");
+                }
+                else{
+                    var DelId = $(this).data('id');
+                    var Callback = $(this).data('callback');
+                    var Callback_action = $(this).data('callback_action');
+                    $.post('_ajax/' + Callback + '.ajax.php', {callback: Callback, callback_action: Callback_action, del_id: DelId}, function (data) {
+                        if (data.trigger) {
+                            Trigger(data.trigger);
+
+                        }
+                        ajax($obj);
+                    }, 'json');
+                }
+                return false;
+
+            });
+
+            $obj.find('.j_confirm_status').on('click', function (e) {
+                $this = $(this);
+                var DelId = $(this).data('id');
+                var campo = $(this).data('campo');
+                var Callback = $(this).data('callback');
+                var status = $(this).data('status');
+                var Callback_action = $(this).data('callback_action');
+                $.post('_ajax/' + Callback + '.ajax.php', {status:status,campo:campo,'callback': Callback, 'callback_action': Callback_action, 'del_id': DelId}, function (data) {
+                    if (data.trigger) {
+                        Trigger(data.trigger);
+                    }
+                    ajax($obj);
+                }, 'json');
+                return false;
+
+            });
+
+
 
             $obj.find('.export-csv').on('click', function (e) {
                 exportToCSV(jQuery(this), $obj);

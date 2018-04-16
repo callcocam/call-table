@@ -6,9 +6,11 @@
  * Time: 13:12
  */
 
-namespace Table;
+namespace Table\Table\Controls;
 
 
+
+use Table\AbstractElement;
 
 class DateFilters extends AbstractElement
 {

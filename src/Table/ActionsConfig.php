@@ -17,11 +17,11 @@ class ActionsConfig
     protected $actions = [
         'add' => [
             "label" => "Adicionar",
-            "state"=>['',1,2,3]
+            "state"=>['',0,1,2,3]
         ],
         'active' => [
             "label" => "Ativar",
-            "state"=>['',2,3]
+            "state"=>['',0,2,3]
         ],
         'inactive' => [
             "label" => "Desabilitar",
@@ -29,7 +29,7 @@ class ActionsConfig
         ],
         "trash" =>[
             "label" => "Enviar p/ Lixeira",
-            "state"=>['',1,2]
+            "state"=>['',0,1,2]
         ] ,
         'trashall' => [
             "label" => "Esvaziar Lixeira",
@@ -37,16 +37,16 @@ class ActionsConfig
         ],
         'csv' => [
             "label" => "Exportar",
-            "state"=>[null,1,2,3]
+            "state"=>['',1]
         ],
         'ajuda' => [
             "label" => "Ajuda",
-            "state"=>['',1,2,3]
+            "state"=>['',0,1,2,3]
         ]
     ];
 
     public function add($name,array $button = []){
-       $this->actions[$name] = $button;
+       $this->actions[$name] = array_merge($this->actions[$name], $button);
        return $this;
     }
 

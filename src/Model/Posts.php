@@ -18,6 +18,7 @@ use Table\Table\ImgConfig;
 use Table\Table\ItemPerPageConfig;
 use Table\Table\StatusConfig;
 
+
 class Posts extends AbstractTable
 {
     protected $defaultHeaders = [
@@ -31,12 +32,11 @@ class Posts extends AbstractTable
 
         parent::__construct();
 
-        $this->actions = (new ActionsConfig())->remove('csv')->getActions();
         $this->headers = (new HeadersConfig($this->defaultHeaders))
             ->add('post_cover', ['tableAlias' => 'p', 'title' => 'Imagem'], 'post_id')
             ->add('post_title', ['tableAlias' => 'p', 'title' => 'Name'], 'post_cover')
             ->add('post_subtitle', ['tableAlias' => 'p', 'title' => 'Sub Titulo'], 'post_title')
-            ->add('action', [ 'title' => '#', 'width' => '125', "sortable" => false ], 'post_status')
+            ->add('action', [ 'title' => '#', 'width' => '200', "sortable" => false ], 'post_status')
             ->getHeaders();
 
         $this->config = (new Config())
@@ -94,11 +94,27 @@ class Posts extends AbstractTable
         ]);
 
 
-        $this->buttonConfig->setVars(['id'=>'post_id','campo_status'=>'post_status'])->setName("editar")
+        $this->buttonConfig->setVars([
+            'id'=>'post_id',
+            'campo_status'=>'post_status',
+            'callback'=>'Posts',
+            'callback_action'=>'manager_status'])->setName("status")
+            ->setStatus([0,1,2,3])
+            ->add("status");
+
+        $this->buttonConfig->setVars([
+            'id'=>'post_id',
+            'campo_status'=>'post_status',
+            'action'=>'admin/dashboard.php?wc=posts/create&id='])->setName("editar")
             ->add("editar");
 
-        $this->buttonConfig->setVars(['id'=>'post_id','campo_status'=>'post_status'])->setName("excluir")
-            ->setStatus([1,2,3])
+        $this->buttonConfig->setVars([
+            'id'=>'post_id',
+            'campo_status'=>'post_status',
+            'callback'=>'Posts',
+            'callback_action'=>'delete',
+        ])->setName("excluir")
+            ->setStatus([0,1,2,3])
             ->add("excluir");
 
         $this->getHeader('action')->getCell()->addDecorator('btn', [

@@ -6,9 +6,11 @@
  * Time: 14:29
  */
 
-namespace Table;
+namespace Table\Table\Controls;
 
 
+
+use Table\AbstractElement;
 
 class Actions extends AbstractElement
 {

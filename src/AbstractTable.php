@@ -11,6 +11,11 @@ use Table\Drivers\MysqlPdo;
 use Table\Drivers\Select;
 use Table\Params\AdapterArrayObject;
 use Table\Source\AbstractSource;
+use Table\Table\Controls\Actions;
+use Table\Table\Controls\DateFilters;
+use Table\Table\Controls\Search;
+use Table\Table\Controls\Status;
+use Table\Table\Controls\ValuesOfItemPerPage;
 use Table\Table\TableInterface;
 use Table\Params\AdapterInterface as ParamAdapterInterface;
 use Table\Table\Exception;
@@ -65,7 +70,7 @@ abstract class AbstractTable extends AbstractElement implements TableInterface
 
     protected $valuesOfItemPerPage = [5 => 5, 10 => 10, 20 => 20, 50 => 50, 100 => 100];
 
-    protected $actions;
+    protected $actions=[];
 
     protected $coverConfig;
 

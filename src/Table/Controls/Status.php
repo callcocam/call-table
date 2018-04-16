@@ -6,11 +6,13 @@
  * Time: 17:45
  */
 
-namespace Table;
+namespace Table\Table\Controls;
 
 
 
-class SelectInput extends AbstractElement
+use Table\AbstractElement;
+
+class Status extends AbstractElement
 {
     /**
      * @var label do option
@@ -32,8 +34,7 @@ class SelectInput extends AbstractElement
     /**
      * @var string $class
      */
-    protected $class = "form-control %s";
-    protected $name;
+    protected $class = "valuesState form-control input-lg";
     private $view;
 
     /**
@@ -43,29 +44,28 @@ class SelectInput extends AbstractElement
      * @param $Value
      * @param $Status
      */
-    public function __construct($name,$Label, $Value, $Status)
+    public function __construct($Value, $Label, $Status)
     {
 
         $this->statusLabel = $Label;
         $this->statusValue = $Value;
         $this->statusAction = $Status;
-        $this->name = $name;
     }
-
 
     /**
      * @param $view
-     * @return SelectInput
+     * @return Status
      */
     public function setView( $view )
     {
         $this->view = $view;
         return $this;
     }
+
     protected function initRendering()
     {
 
-        if($this->statusAction === $this->statusValue):
+        if($this->statusAction == $this->statusValue):
             $this->statusSelect = "selected";
         endif;
 
@@ -84,14 +84,9 @@ class SelectInput extends AbstractElement
             'statusValue' => $this->statusValue,
             'statusLabel' => $this->statusLabel,
         ]);
-
     }
 
     public function getClass(){
         return $this->class;
-    }
-
-    public function setClass($class){
-        $this->class = sprintf($this->class, $class);
     }
 }

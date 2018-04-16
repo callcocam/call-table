@@ -3,14 +3,16 @@
  * Created by PhpStorm.
  * User: caltj
  * Date: 19/03/2018
- * Time: 22:36
+ * Time: 17:45
  */
 
-namespace Table;
+namespace Table\Table\Controls;
 
 
 
-class ValuesOfItemPerPage extends AbstractElement
+use Table\AbstractElement;
+
+class SelectInput extends AbstractElement
 {
     /**
      * @var label do option
@@ -32,40 +34,40 @@ class ValuesOfItemPerPage extends AbstractElement
     /**
      * @var string $class
      */
-    protected $class = "itemPerPage form-control input-lg";
-
+    protected $class = "form-control %s";
+    protected $name;
     private $view;
 
     /**
      * Array of options
      *
-     * @param $Value
      * @param $Label
+     * @param $Value
      * @param $Status
-     * @throws \Exception
      */
-    public function __construct($Value, $Label,$Status)
+    public function __construct($name,$Label, $Value, $Status)
     {
 
-        $this->statusAction = $Status;
         $this->statusLabel = $Label;
         $this->statusValue = $Value;
+        $this->statusAction = $Status;
+        $this->name = $name;
     }
+
 
     /**
      * @param $view
-     * @return ValuesOfItemPerPage
+     * @return SelectInput
      */
     public function setView( $view )
     {
         $this->view = $view;
         return $this;
     }
-
-
     protected function initRendering()
     {
-        if((int)$this->statusAction === (int)$this->statusValue):
+
+        if($this->statusAction === $this->statusValue):
             $this->statusSelect = "selected";
         endif;
 
@@ -84,10 +86,14 @@ class ValuesOfItemPerPage extends AbstractElement
             'statusValue' => $this->statusValue,
             'statusLabel' => $this->statusLabel,
         ]);
-      }
+
+    }
 
     public function getClass(){
         return $this->class;
     }
 
+    public function setClass($class){
+        $this->class = sprintf($this->class, $class);
+    }
 }

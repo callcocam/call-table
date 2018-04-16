@@ -26,7 +26,9 @@ class Btn extends AbstractCellDecorator
      */
     protected $url;
     private $options;
-
+    protected $action ="create";
+    protected $callback ="Posts";
+    protected $callback_action ="delete";
 
 
     /**
@@ -53,6 +55,9 @@ class Btn extends AbstractCellDecorator
     public function render($context,$opt=null)
     {
 
+//        echo "<pre>";
+//        var_dump($this->options['url']);
+//        echo "</pre>";
         $Buttons=[];
         if ($opt) {
            $this->view = new \Table\Template($opt);
@@ -66,7 +71,14 @@ class Btn extends AbstractCellDecorator
                     }
                     unset($urls['status']);
                     $Buttons[] = $this->view->render(sprintf("table/rows/%s", $name),[
-                        'id'=>trim($actualRow[$urls['vars']['id']])
+                        'id'=>trim($actualRow[$urls['vars']['id']]),
+                        'campo'=>trim($urls['vars']['campo_status']),
+                        'status'=>trim($actualRow[$urls['vars']['campo_status']]),
+                        'icon'=>(int)$actualRow[$urls['vars']['campo_status']]?" icon-checkmark":" icon-cross",
+                        'class'=>(int)$actualRow[$urls['vars']['campo_status']]?"blue":"default",
+                        'action'=>isset($urls['vars']['action'])?$urls['vars']['action']:$this->action,
+                        'callback'=>isset($urls['vars']['callback'])?$urls['vars']['callback']:$this->callback,
+                        'callback_action'=>isset($urls['vars']['callback_action'])?$urls['vars']['callback_action']:$this->callback_action,
                     ]);
                 }
 

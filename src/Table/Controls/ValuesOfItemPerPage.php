@@ -3,14 +3,16 @@
  * Created by PhpStorm.
  * User: caltj
  * Date: 19/03/2018
- * Time: 17:45
+ * Time: 22:36
  */
 
-namespace Table;
+namespace Table\Table\Controls;
 
 
 
-class Status extends AbstractElement
+use Table\AbstractElement;
+
+class ValuesOfItemPerPage extends AbstractElement
 {
     /**
      * @var label do option
@@ -32,27 +34,29 @@ class Status extends AbstractElement
     /**
      * @var string $class
      */
-    protected $class = "valuesState form-control input-lg";
+    protected $class = "itemPerPage form-control input-lg";
+
     private $view;
 
     /**
      * Array of options
      *
-     * @param $Label
      * @param $Value
+     * @param $Label
      * @param $Status
+     * @throws \Exception
      */
-    public function __construct($Value, $Label, $Status)
+    public function __construct($Value, $Label,$Status)
     {
 
+        $this->statusAction = $Status;
         $this->statusLabel = $Label;
         $this->statusValue = $Value;
-        $this->statusAction = $Status;
     }
 
     /**
      * @param $view
-     * @return Status
+     * @return ValuesOfItemPerPage
      */
     public function setView( $view )
     {
@@ -60,10 +64,10 @@ class Status extends AbstractElement
         return $this;
     }
 
+
     protected function initRendering()
     {
-
-        if($this->statusAction == $this->statusValue):
+        if((int)$this->statusAction === (int)$this->statusValue):
             $this->statusSelect = "selected";
         endif;
 
@@ -82,9 +86,10 @@ class Status extends AbstractElement
             'statusValue' => $this->statusValue,
             'statusLabel' => $this->statusLabel,
         ]);
-    }
+      }
 
     public function getClass(){
         return $this->class;
     }
+
 }

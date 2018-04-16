@@ -37,7 +37,6 @@ class MysqlPdo implements DriverStrategy
         if ($this->condiction) {
             $query[] = implode(' ', $this->condiction);
         }
-        var_dump(implode(' ', $query));
         $this->query = $this->pdo->prepare(implode(' ', $query));
         return $this;
     }
@@ -48,7 +47,6 @@ class MysqlPdo implements DriverStrategy
         if ($this->condiction) {
             $query[] = implode(' ', $this->condiction);
         }
-        var_dump(implode(' ', $query));
         $this->query = $this->pdo->prepare(implode(' ', $query));
         return $this;
     }
@@ -142,9 +140,6 @@ class MysqlPdo implements DriverStrategy
     {
         if ($data):
             foreach ($data as $field => $value) {
-//                echo "<pre>";
-//                var_dump([$field,$value]);
-//                echo "</pre>";
                 $this->query->bindValue($field, $value);
             }
         endif;

@@ -6,8 +6,10 @@
  * Time: 12:14
  */
 
-namespace Table;
+namespace Table\Table\Controls;
 
+
+use Table\AbstractElement;
 
 class Search extends AbstractElement
 {

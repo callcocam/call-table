@@ -77,7 +77,7 @@ class ModuleOptions implements
     /**
      * @var bool
      */
-    protected $showButtonsActions = true;
+    protected $showButtonsActions = false;
 
     /**
      * @var bool
