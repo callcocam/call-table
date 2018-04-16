@@ -6,7 +6,7 @@
             <span class="crumb">/</span>
             <a title="<?= ADMIN_NAME; ?>" href="dashboard.php?wc=home">Dashboard</a>
             <span class="crumb">/</span>
-            <a title="Todos os Posts" href="dashboard.php?wc=posts/home">Posts</a>
+            <a title="Todos os Posts" href="dashboard.php?wc=posts/home"> <?= $name ?></a>
 
         </p>
     </div>
@@ -25,11 +25,7 @@
     <div class="zf-table-wrap  form-inline">
         <div class="box box100">
             <div class="box-header">
-                <?php if ($name): ?>
-                    <h3 class="box-title">
-                        <?= $name ?>
-                    </h3>
-                <?php endif; ?>
+
 
             </div>
             <!-- /.box-header -->

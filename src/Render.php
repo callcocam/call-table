@@ -54,10 +54,9 @@ class Render extends AbstractCommon
         $res = array();
         $render = $this->getTable()->getRow()->renderRows('array_assc');
         $res['sEcho'] = $render;
-        $res['iTotalDisplayRecords'] = $this->getTable()->getSource()->getPaginator();
+        $res['iTotalDisplayRecords'] = $this->getTable()->getSource()->getTotal();
         $res['aaData'] = $render;
         $res['draw'] = $render;
-        $res['data'] = $render;
         return $res;
     }
 
@@ -65,11 +64,11 @@ class Render extends AbstractCommon
     public function renderNewDataTableJson()
     {
 
-        $render = $this->getTable()->getRow()->renderRows('array');
-
+        $render = $this->getTable()->getRow()->renderRows('array_assc');
         $res = array(
             'draw' => $render,
             'recordsFiltered' => $this->getTable()->getSource()->getPaginator()->getTotal(),
+            'paginator'=> $this->renderPaginator(),
             'data' => $render,
         );
 

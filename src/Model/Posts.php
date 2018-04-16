@@ -23,7 +23,7 @@ class Posts extends AbstractTable
 {
     protected $defaultHeaders = [
         'post_cover' => ['tableAlias' => 'p', 'title' => 'Imagem', 'width' => '50', "sortable" => false, "ordering" => 1],
-        'post_status' => ['tableAlias' => 'p', 'title' => 'Active', 'width' => 150, "sortable" => false, "order" => 5],
+        'post_status' => ['tableAlias' => 'p', 'title' => 'S', 'width' => 25, "sortable" => false, "order" => 5],
     ];
 
 
@@ -32,17 +32,18 @@ class Posts extends AbstractTable
 
         parent::__construct();
 
+        //tableAlias os campos que realmente estão na tabela do banco
         $this->headers = (new HeadersConfig($this->defaultHeaders))
             ->add('post_title', ['tableAlias' => 'p', 'title' => 'Name'], 'post_cover')
-            ->add('post_subtitle', ['tableAlias' => 'p', 'title' => 'Sub Titulo'], 'post_title')
-            ->add('post_views', ['tableAlias' => 'p', 'title' => 'Visualisaçõe'], 'post_title')
-            ->add('post_tags', ['tableAlias' => 'p', 'title' => 'Visualisaçõe'], 'post_views')
-            ->add('post_category', ['tableAlias' => 'p', 'title' => 'Visualisaçõe'], 'post_tags')
+            //->add('post_subtitle', ['tableAlias' => 'p', 'title' => 'Sub Titulo'], 'post_title')
+            ->add('post_views', ['tableAlias' => 'p', 'title' => 'Views', 'width' => '50'], 'post_title')
+            ->add('post_category', ['tableAlias' => 'p', 'title' => 'Categorias'], 'post_views')
+            ->add('post_tags', ['tableAlias' => 'p', 'title' => 'Tags'], 'post_category')
             ->add('post_id', ['title' => '#', 'width' => '200', "sortable" => false], 'post_status')
             ->getHeaders();
 
         $this->config = (new Config())
-            ->add('name', 'Lista de Posts')
+            ->add('name', 'Posts')
             ->add('field_date', 'post_date')
             ->add('id', 'post_id')
             ->add('status', 'post_status')
@@ -91,7 +92,6 @@ class Posts extends AbstractTable
             'callable' => function ( $context, $record ) {
                 $Read = new \Read();
                 extract($record);
-
                 $S = filter_input(INPUT_GET, "s", FILTER_DEFAULT);
                 $T = filter_input(INPUT_GET, "tag", FILTER_DEFAULT);
                 $Category = null;
@@ -101,7 +101,6 @@ class Posts extends AbstractTable
                         $Category = "<span class='icon-bookmark'><a title='Artigos em {$Read->getResult()[0]['category_title']}' href='dashboard.php?wc=posts/home&s={$S}&cat={$Read->getResult()[0]['category_id']}&tag=" . urlencode($T) . "'>{$Read->getResult()[0]['category_title']}</a></span> ";
                     endif;
                 endif;
-
                 if (!empty($post_category_parent)):
                     $Read->FullRead("SELECT category_title, category_id FROM " . DB_CATEGORIES . " WHERE category_id IN({$post_category_parent})");
                     if ($Read->getResult()):

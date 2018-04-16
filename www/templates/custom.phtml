@@ -1,12 +1,12 @@
 <header class="dashboard_header">
     <div class="dashboard_header_title">
-        <h1 class="icon-blog">Posts</h1>
+        <h1 class="icon-blog"><?= $name ?></h1>
         <p class="dashboard_header_breadcrumbs">
             &raquo; <?= ADMIN_NAME; ?>
             <span class="crumb">/</span>
             <a title="<?= ADMIN_NAME; ?>" href="dashboard.php?wc=home">Dashboard</a>
             <span class="crumb">/</span>
-            <a title="Todos os Posts" href="dashboard.php?wc=posts/home">Posts</a>
+            <a title="Todos os Posts" href="dashboard.php?wc=posts/home"><?= $name ?></a>
 
         </p>
     </div>
@@ -21,10 +21,12 @@
     </div>
 </header>
 
+
+
 <div class="dashboard_content">
     <div class="zf-table-wrap  form-inline">
         <div class="box box100">
-            <div class="box-header">
+            <div class="box-header">List
                 <?php if ($name): ?>
                     <h3 class="box-title">
                         <?= $name ?>
@@ -34,6 +36,7 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive">
+
                 <?php if ($rows): ?>
                     <?php foreach ($rows as $row): ?>
                         <article class="box box25 post_single" id="52">
