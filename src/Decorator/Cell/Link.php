@@ -19,7 +19,7 @@ class Link extends AbstractCellDecorator
     protected $vars;
 
     private $action = "create";
-    private $path="post";
+    private $path="posts";
 
 
     /**
@@ -36,6 +36,7 @@ class Link extends AbstractCellDecorator
 
             $this->vars = isset($options['vars']) ? $options['vars'] : "";
             $this->action = isset($options['action']) ? $options['action'] : "create";
+            $this->path = isset($options['path']) ? $options['path'] : "posts";
 
     }
 

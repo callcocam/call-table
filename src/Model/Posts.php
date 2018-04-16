@@ -22,7 +22,7 @@ use Table\Table\StatusConfig;
 class Posts extends AbstractTable
 {
     protected $defaultHeaders = [
-        'post_id' => ['tableAlias' => 'p', 'title' => 'check-all', 'width' => '50', "sortable" => false, "ordering" => 1],
+        'post_cover' => ['tableAlias' => 'p', 'title' => 'Imagem', 'width' => '50', "sortable" => false, "ordering" => 1],
         'post_status' => ['tableAlias' => 'p', 'title' => 'Active', 'width' => 150, "sortable" => false, "order" => 5],
     ];
 
@@ -33,10 +33,9 @@ class Posts extends AbstractTable
         parent::__construct();
 
         $this->headers = (new HeadersConfig($this->defaultHeaders))
-            ->add('post_cover', ['tableAlias' => 'p', 'title' => 'Imagem'], 'post_id')
             ->add('post_title', ['tableAlias' => 'p', 'title' => 'Name'], 'post_cover')
             ->add('post_subtitle', ['tableAlias' => 'p', 'title' => 'Sub Titulo'], 'post_title')
-            ->add('action', [ 'title' => '#', 'width' => '200', "sortable" => false ], 'post_status')
+            ->add('post_id', [ 'title' => '#', 'width' => '200', "sortable" => false ], 'post_status')
             ->getHeaders();
 
         $this->config = (new Config())
@@ -66,7 +65,7 @@ class Posts extends AbstractTable
         ]);
 //
         $this->getHeader('post_title')->getCell()->addDecorator('link', [
-            'path'=>'post',
+            'path'=>'posts',
             'action'=>'create',
             'vars' => 'post_id'
         ]);
@@ -78,17 +77,19 @@ class Posts extends AbstractTable
 //        ));
 
 
-        $this->getHeader('post_id')->addDecorator('check');
-        $this->getHeader('post_id')->getCell()->addDecorator('check');
+        //$this->getHeader('post_id')->addDecorator('check');
+        //$this->getHeader('post_id')->getCell()->addDecorator('check');
         $this->getHeader('post_status')->getCell()->addDecorator('state', [
             'value' => [
                 '1' => 'Active',
                 '2' => 'Desactive',
+                '0' => 'Desactive',
                 '3' => 'Trash',
             ],
             'class' => [
                 '1' => 'green',
                 '2' => 'yellow',
+                '0' => 'yellow',
                 '3' => 'red',
             ],
         ]);
@@ -117,7 +118,7 @@ class Posts extends AbstractTable
             ->setStatus([0,1,2,3])
             ->add("excluir");
 
-        $this->getHeader('action')->getCell()->addDecorator('btn', [
+        $this->getHeader('post_id')->getCell()->addDecorator('btn', [
             'params' => $this->getParams(),
             'url' => $this->buttonConfig,
         ]);

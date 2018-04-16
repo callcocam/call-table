@@ -43,6 +43,6 @@ class State extends AbstractCellDecorator
 	{
 		$class = (isset($this->options['class'][$context])) ? $this->options['class'][$context] : $context;
 		$value = (isset($this->options['value'][$context])) ? $this->options['value'][$context] : $context;
-		return sprintf('<span  class="text-%s">%s</span>', $class,$value);
+		return sprintf('<span  class="btn_%s">%s</span>', $class,$value);
 	}
 }
