@@ -10,12 +10,12 @@ if (empty($_SESSION['userLogin']) || empty($_SESSION['userLogin']['user_level'])
     die;
 endif;
 
-        $table = new \Table\Model\Posts();
+        $table = new \Table\Model\Cidades();
         $Params = filter_input_array(INPUT_GET, FILTER_DEFAULT);
-        $table->setSource(DB_POSTS)
+        $table->setSource('ws_cidades')
             ->setParamAdapter($Params);
-        //$Result =$table->render();
-        $Result =$table->render('custom','custom');
+        $Result =$table->render();
+        //$Result =$table->render('custom','custom');
        // $Result =$table->render('newDataTableJson');
         if(is_array($Result)){
         var_dump($Result);
