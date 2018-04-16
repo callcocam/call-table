@@ -17,25 +17,25 @@
             },
             complete: function () {
 
-                $('.icheck').iCheck({
-                    checkboxClass: 'icheckbox_square-blue',
-                    radioClass: 'iradio_square-blue',
-                    increaseArea: '20%' // optional
-                });
-
-                //When unchecking the checkbox
-                $("#check-all").on('ifUnchecked', function (event) {
-                    //Uncheck all checkboxes
-                    $(".check_acao", ".table").iCheck("uncheck");
-
-                });
-
-                //When checking the checkbox
-                $("#check-all").on('ifChecked', function (event) {
-                    //Check all checkboxes
-                    $(".check_acao", ".table").iCheck("check");
-
-                });
+                // $('.icheck').iCheck({
+                //     checkboxClass: 'icheckbox_square-blue',
+                //     radioClass: 'iradio_square-blue',
+                //     increaseArea: '20%' // optional
+                // });
+                //
+                // //When unchecking the checkbox
+                // $("#check-all").on('ifUnchecked', function (event) {
+                //     //Uncheck all checkboxes
+                //     $(".check_acao", ".table").iCheck("uncheck");
+                //
+                // });
+                //
+                // //When checking the checkbox
+                // $("#check-all").on('ifChecked', function (event) {
+                //     //Check all checkboxes
+                //     $(".check_acao", ".table").iCheck("check");
+                //
+                // });
             },
 
             onInit: function () {
@@ -226,7 +226,7 @@
                             cancelLabel: 'Cancelar',
                             customRangeLabel: 'Perssonalizado'
                         },
-                        startDate: moment().subtract(29, 'days'),
+                        //startDate: moment().subtract(29, 'days'),
                         endDate: moment(),
                         applyClass: 'btn btn_green',
                         cancelClass: 'btn btn_red'
@@ -237,7 +237,13 @@
                         $('#zfTableEndDate').val(end.format('YYYY-MM-DD'));
                         ajax($obj);
                     }
-                )
+                ).on('cancel.daterangepicker', function(ev, picker) {
+                    //do something, like clearing an input
+                    $('#label-search').text('Buscar Por Data');
+                    $('#zfTableStartDate').val('');
+                    $('#zfTableEndDate').val('');
+                    ajax($obj);
+                })
             }
         }
 

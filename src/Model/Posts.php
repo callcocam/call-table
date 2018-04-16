@@ -39,7 +39,7 @@ class Posts extends AbstractTable
             ->getHeaders();
 
         $this->config = (new Config())
-            ->add('name', 'Lista de makes')
+            ->add('name', 'Lista de Posts')
             ->add('field_date', 'post_date')
             ->add('id', 'post_id')
             ->add('status', 'post_status')

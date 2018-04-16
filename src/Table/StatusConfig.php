@@ -13,7 +13,8 @@ use Table\Table\Exception\LogicException;
 
 class StatusConfig
 {
-    protected $status =["" => 'All', 1 => 'Active', 2 => 'Inactive', 3 => 'Trash'];
+   // protected $status =["" => 'All', 1 => 'Active', 2 => 'Inactive', 3 => 'Trash'];
+    protected $status =["" => 'All', 1 => 'Publicados'];
     public function add($name,$config){
         $this->status[$name] = $config;
         return $this;

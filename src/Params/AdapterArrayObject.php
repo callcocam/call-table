@@ -71,7 +71,7 @@ class AdapterArrayObject extends AbstractAdapter implements AdapterInterface
      * data final da pesquisa
      */
     protected $end_date;
-    const DEFAULT_STATUS = "";
+    const DEFAULT_STATUS = 1;
     const DEFAULT_PAGE = 1;
     const DEFAULT_ORDER = 'asc';
     const DEFAULT_ITEM_COUNT_PER_PAGE = 10;

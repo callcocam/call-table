@@ -56,6 +56,7 @@ class DateFilters extends AbstractElement
             $end_date = date_create($this->end_date);
             $this->start  = date_format($start_date, 'd/m/Y');
             $this->end  = date_format($end_date, 'd/m/Y');
+            $this->dateSearch  = '-';
         endif;
     }
 
@@ -70,6 +71,7 @@ class DateFilters extends AbstractElement
         return $this->view->render("/table/date-time-piker",[
             'start' => $this->start,
             'end' => $this->end,
+            'dateSearch' => $this->dateSearch,
         ]);
     }
 }
